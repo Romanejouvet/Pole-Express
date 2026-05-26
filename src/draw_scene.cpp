@@ -11,7 +11,6 @@ GLBI_Set_Of_Points axisX(3);
 GLBI_Set_Of_Points axisY(3);
 GLBI_Set_Of_Points axisZ(3);
 GLBI_Convex_2D_Shape ground{3};
-IndexedMesh *sphere;
 
 void initScene()
 {
@@ -46,29 +45,6 @@ void initScene()
 
 	ground.initShape(baseCarre);
 	ground.changeNature(GL_TRIANGLE_FAN);
-
-	sphere = basicSphere();
-	sphere->createVAO();
-}
-
-void drawFrame()
-{
-	// TO DO
-}
-
-void drawBase()
-{
-	// TO DO
-}
-
-void drawArm()
-{
-	// TO DO
-}
-
-void drawPan()
-{
-	// TO DO
 }
 
 void drawScene()
@@ -79,17 +55,7 @@ void drawScene()
 	axisX.drawSet();
 	axisY.drawSet();
 	axisZ.drawSet();
-	{
-		myEngine.mvMatrixStack.pushMatrix();
-		myEngine.setFlatColor(1, 1, 1);
-		myEngine.mvMatrixStack.addHomothety({3, 3, 3});
-		myEngine.mvMatrixStack.addTranslation({4, 0, 5});
-		myEngine.updateMvMatrix();
-		sphere->draw();
-		myEngine.mvMatrixStack.popMatrix();
-		myEngine.updateMvMatrix();
-		}
 
-	myEngine.setFlatColor(0.2, 0.0, 0.0);
+	myEngine.setFlatColor(0.0, 0.5, 0.0);
 	ground.drawShape();
 }

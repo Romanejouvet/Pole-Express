@@ -4,6 +4,8 @@
 #include "glbasimac/glbi_set_of_points.hpp"
 #include "glbasimac/glbi_convex_2D_shape.hpp"
 #include "tools/basic_mesh.hpp"
+#include "train.hpp"
+#include "rails.hpp"
 
 using namespace glbasimac;
 
@@ -19,13 +21,4 @@ extern GLBI_Engine myEngine;
 
 void initScene();
 
-void drawFrame();
-
-void drawBase();
-
-void drawArm();
-
-void drawPan();
-
 void drawScene();
-

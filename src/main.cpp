@@ -51,14 +51,23 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		// TO DO EX01 part 3
 
-	case GLFW_KEY_R:
-		//> EXO 3
-		//< FIN EXO 3
-		break;
-	case GLFW_KEY_T:
-		//> EXO 3
-		//< FIN EXO 3
-		break;
+case GLFW_KEY_R:
+        //> EXO 3
+        if (is_pressed) {
+            dist_zoom -= 1.0f;
+            if (dist_zoom < 2.0f) dist_zoom = 2.0f; // Sécurité : pas trop près
+        }
+        //< FIN EXO 3
+        break;
+        
+    case GLFW_KEY_T:
+        //> EXO 3
+        if (is_pressed) {
+            dist_zoom += 1.0f;
+            if (dist_zoom > 100.0f) dist_zoom = 100.0f; // Sécurité : pas trop loin
+        }
+        //< FIN EXO 3
+        break;
 	case GLFW_KEY_UP:
 		angle_phy += 1.0;
 		break;

@@ -4,6 +4,7 @@
 #include "glbasimac/glbi_set_of_points.hpp"
 #include "glbasimac/glbi_convex_2D_shape.hpp"
 #include "tools/basic_mesh.hpp"
+#include <vector>
 
 enum railType
 {
@@ -17,6 +18,10 @@ public:
     Position pos;
     int angle;
     railType type;
+
+    Rail(Position p, float a, railType t)
+    : pos(p), angle(a), type(t) {}
+    Rail() {}
 };
 
 const float sr = 0.4f; // section d'un rail    
@@ -26,7 +31,4 @@ const float posx_rail2 = 7.0f;  // position x du rail 2
 const float taille_case = 10.0f; // bon c'est la taille d'une case quoi
 const float longueur_bois = 6.0f; // longueur de la balast
 
-// primitives
-void drawLocalCube(float dx, float dy, float dz);
-void drawLocalCylinder(float radius, float x_start, float x_end);
-
+std::vector<Rail> CreateRailPath(GridParam params);

@@ -192,6 +192,15 @@ int main(int /*argc*/, char ** /*argv*/)
 	}
 
 	glfwTerminate();
+
+	    GridParam pars = readJson("../src/config.json");
+    std::vector<Rail> rail_path = CreateRailPath(pars);
+
+    std::vector<Position> path = pars.path;
+
+    for (auto i : path){
+        std::cout << i.x << " " << i.y << std::endl;
+    }
 	
 	return 0;
 }

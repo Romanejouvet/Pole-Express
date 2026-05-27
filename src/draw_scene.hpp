@@ -6,6 +6,7 @@
 #include "tools/basic_mesh.hpp"
 #include "train.hpp"
 #include "rails.hpp"
+#include "json_handler.hpp"
 
 using namespace glbasimac;
 

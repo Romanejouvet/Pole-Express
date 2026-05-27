@@ -12,8 +12,8 @@ GridParam readJson(std::string path){
 
     for (const auto& element : data["path"]) {
         Position p;
-        p.x = element[0].get<int>();
-        p.y = element[1].get<int>();
+        p.x = element[1].get<int>();
+        p.y = element[0].get<int>();
         
         // Ajout du point dans le vector de la structure
         params.path.push_back(p);

@@ -143,10 +143,10 @@ void initScene()
     somePoints.initSet(points, 1.0, 1.0, 1.0);
 
     std::vector<float> baseCarre{
-        -10.0, -10.0, 0.0,
-        10.0, -10.0, 0.0,
-        10.0, 10.0, 0.0,
-        -10.0, 10.0, 0.0};
+        -50.0, -50.0, 0.0,
+        50.0, -50.0, 0.0,
+        50.0, 50.0, 0.0,
+        -50.0, 50.0, 0.0};
 
     ground.initShape(baseCarre);
     ground.changeNature(GL_TRIANGLE_FAN);
@@ -211,10 +211,10 @@ void drawScene()
 
         GridParam pars = readJson("../src/config.json");
     std::vector<Rail> rail_path = CreateRailPath(pars);
-
     for (auto rail : rail_path){
         drawRail(rail);
     }
+
 
 
 

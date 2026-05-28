@@ -16,7 +16,7 @@ struct Rail
 {
 public:
     Position pos;
-    int angle;
+    float angle;
     railType type;
 
     Rail(Position p, float a, railType t)

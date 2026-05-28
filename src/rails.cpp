@@ -4,7 +4,7 @@ std::vector<Rail> CreateRailPath(GridParam par)
 {
     std::vector<Rail> rail_path;
 
-    std::vector<Position> p = par.path;
+    std::vector<Position> &p = par.path;
     size_t size = p.size();
 
     for (size_t i = 0; i < size; i++)
@@ -28,11 +28,11 @@ std::vector<Rail> CreateRailPath(GridParam par)
 
         int dx2 = next.x - cur.x;
         int dy2 = next.y - cur.y;
-        // pas méga utile mais ca rend le code propre 
+        // pour rendre la suite plus propre
 
         if (dy1 == 0 && dy2 == 0) r.angle = M_PI_2;
 
-        else if (dx1 == 0 && dx2 == 0) r.angle = 0;
+        else if (dx1 == 0 && dx2 == 0) r.angle = 0; // utile pour pas avoir des rails courbes de partout
 
         else
         {

@@ -5,7 +5,6 @@
 #include "tools/shaders.hpp"
 #include <iostream>
 
-
 using namespace glbasimac;
 using namespace STP3D;
 
@@ -39,7 +38,7 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 	int is_pressed = (action == GLFW_PRESS);
 	switch (key)
 	{
-	case GLFW_KEY_A:
+	case GLFW_KEY_Q:
 	case GLFW_KEY_ESCAPE:
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 		break;
@@ -52,34 +51,84 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		// TO DO EX01 part 3
 
-case GLFW_KEY_R:
-        //> EXO 3
-        if (is_pressed) {
-            dist_zoom -= 1.0f;
-            if (dist_zoom < 2.0f) dist_zoom = 2.0f; // Sécurité : pas trop près
-        }
-        //< FIN EXO 3
-        break;
-        
-    case GLFW_KEY_T:
-        //> EXO 3
-        if (is_pressed) {
-            dist_zoom += 1.0f;
-            if (dist_zoom > 100.0f) dist_zoom = 100.0f; // Sécurité : pas trop loin
-        }
-        //< FIN EXO 3
-        break;
+	case GLFW_KEY_R:
+		//> EXO 3
+		if (is_pressed)
+		{
+			dist_zoom -= 1.0f;
+			if (dist_zoom < 2.0f)
+				dist_zoom = 2.0f;
+		}
+		//< FIN EXO 3
+		break;
+
+	case GLFW_KEY_T:
+		//> EXO 3
+		if (is_pressed)
+		{
+			dist_zoom += 1.0f;
+			if (dist_zoom > 100.0f)
+				dist_zoom = 100.0f;
+		}
+		//< FIN EXO 3
+		break;
 	case GLFW_KEY_UP:
-		angle_phy += 1.0;
+		if (!camPOV)
+			angle_phy += 1.0;
 		break;
 	case GLFW_KEY_DOWN:
-		angle_phy -= 1.0;
+		if (!camPOV)
+			angle_phy -= 1.0;
 		break;
 	case GLFW_KEY_LEFT:
-		angle_theta += 1.0;
+		if (!camPOV)
+			angle_theta += 1.0;
+		else
+			anglePOV += 0.05;
 		break;
 	case GLFW_KEY_RIGHT:
-		angle_theta -= 1.0;
+		if (!camPOV)
+			angle_theta -= 1.0;
+		else
+			anglePOV -= 0.05;
+		break;
+
+	case GLFW_KEY_C:
+		if (is_pressed)
+		{
+			camPOV = !camPOV;
+		}
+		break;
+	case GLFW_KEY_W:
+		if (camPOV)
+		{
+			xPOV += cos(anglePOV);
+			yPOV += sin(anglePOV);
+		}
+		break;
+
+	case GLFW_KEY_S:
+		if (camPOV)
+		{
+			xPOV -= cos(anglePOV);
+			yPOV -= sin(anglePOV);
+		}
+		break;
+
+	case GLFW_KEY_A:
+		if (camPOV)
+		{
+			xPOV -= sin(anglePOV);
+			yPOV += cos(anglePOV);
+		}
+		break;
+
+	case GLFW_KEY_D:
+		if (camPOV)
+		{
+			xPOV += sin(anglePOV);
+			yPOV -= cos(anglePOV);
+		}
 		break;
 
 	default:
@@ -97,11 +146,12 @@ void onMouseButton(GLFWwindow *window, int button, int action, int /*mods*/)
 	}
 }
 
-int main(int /*argc*/, char ** /*argv*/)
+int main(int argc, char **argv)
 {
 	/* GLFW initialisation */
 	GLFWwindow *window;
 	myEngine.mode2D = false; // Set engine to 3D mode
+
 	if (!glfwInit())
 		return -1;
 
@@ -147,8 +197,20 @@ int main(int /*argc*/, char ** /*argv*/)
 	initScene();
 	double elapsedTime{0.0};
 
-	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
+	std::string pars_path;
+	if (argc > 0)
+	{
+		pars_path = argv[1];
+		std::cout << pars_path << std::endl;
+	}
+
+	std::vector<Rail> path;
+
+	GridParam parameters = readJson("../src/"+pars_path);
+    path = CreateRailPath(parameters);
+
+		/* Loop until the user closes the window */
+		while (!glfwWindowShouldClose(window))
 	{
 		/* Get time (in second) at loop beginning */
 		double startTime = glfwGetTime();
@@ -159,24 +221,41 @@ int main(int /*argc*/, char ** /*argv*/)
 		// TO DO EX01 part 2
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
-		drawScene();
+		drawScene(path);
 
 		// TO DO EX01 part 3
 		/* Fix camera position */
 		myEngine.mvMatrixStack.loadIdentity();
-		Vector3D pos_camera =
-			Vector3D(dist_zoom * cos(deg2rad(angle_theta)) * cos(deg2rad(angle_phy)),
-					 dist_zoom * sin(deg2rad(angle_theta)) * cos(deg2rad(angle_phy)),
-					 dist_zoom * sin(deg2rad(angle_phy)));
-		Vector3D viewed_point = Vector3D(0.0, 0.0, 0.0);
-		Vector3D up_vector = Vector3D(0.0, 0.0, 1.0);
-		Matrix4D viewMatrix = Matrix4D::lookAt(pos_camera, viewed_point, up_vector);
-		myEngine.setViewMatrix(viewMatrix);
+		if (!camPOV)
+		{
+
+			Vector3D pos_camera =
+				Vector3D(dist_zoom * cos(deg2rad(angle_theta)) * cos(deg2rad(angle_phy)),
+						 dist_zoom * sin(deg2rad(angle_theta)) * cos(deg2rad(angle_phy)),
+						 dist_zoom * sin(deg2rad(angle_phy)));
+			Vector3D viewed_point = Vector3D(0.0, 0.0, 0.0);
+			Vector3D up_vector = Vector3D(0.0, 0.0, 1.0);
+			Matrix4D viewMatrix = Matrix4D::lookAt(pos_camera, viewed_point, up_vector);
+			myEngine.setViewMatrix(viewMatrix);
+		}
+		else
+		{
+			Vector3D pos_camera = Vector3D(xPOV, yPOV, 5);
+			float dirX = cos(anglePOV);
+			float dirY = sin(anglePOV);
+
+			Vector3D viewed_point(
+				xPOV + dirX,
+				yPOV + dirY,
+				5.0f);
+			Vector3D up_vector = Vector3D(0.0, 0.0, 1.0);
+			Matrix4D viewMatrix = Matrix4D::lookAt(pos_camera, viewed_point, up_vector);
+			myEngine.setViewMatrix(viewMatrix);
+		}
+
 		myEngine.updateMvMatrix();
 
-		drawScene();
-	
-		
+		drawScene(path);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -196,14 +275,5 @@ int main(int /*argc*/, char ** /*argv*/)
 
 	glfwTerminate();
 
-	    GridParam pars = readJson("../src/config.json");
-    std::vector<Rail> rail_path = CreateRailPath(pars);
-
-    std::vector<Position> path = pars.path;
-
-    for (auto i : path){
-        std::cout << i.x << " " << i.y << std::endl;
-    }
-	
 	return 0;
 }

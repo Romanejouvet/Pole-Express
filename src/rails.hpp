@@ -1,10 +1,9 @@
 #pragma once
 #include "json_handler.hpp"
-#include "glbasimac/glbi_engine.hpp"
-#include "glbasimac/glbi_set_of_points.hpp"
-#include "glbasimac/glbi_convex_2D_shape.hpp"
-#include "tools/basic_mesh.hpp"
+#include "draw_scene.hpp"
 #include <vector>
+
+extern glbasimac::GLBI_Engine myEngine;
 
 enum railType
 {
@@ -32,3 +31,6 @@ const float taille_case = 10.0f; // bon c'est la taille d'une case quoi
 const float longueur_bois = 6.0f; // longueur de la balast
 
 std::vector<Rail> CreateRailPath(GridParam params);
+void drawStraightRail(glbasimac::GLBI_Engine myEngine);
+void drawCurvedRail(glbasimac::GLBI_Engine myEngine);
+void drawRail(Rail r, glbasimac::GLBI_Engine myEngine);

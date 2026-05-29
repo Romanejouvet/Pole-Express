@@ -201,8 +201,8 @@ int main(int argc, char **argv)
 	if (argc > 0)
 	{
 		pars_path = argv[1];
-		std::cout << pars_path << std::endl;
 	}
+	else pars_path = "config.json"; // pour faciliter le debug
 
 	std::vector<Rail> path;
 

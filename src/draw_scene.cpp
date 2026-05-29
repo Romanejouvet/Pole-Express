@@ -1,17 +1,21 @@
 #include "draw_scene.hpp"
 #include "rails.hpp"
 #include "train.hpp"
+#define STB_IMAGE_IMPLEMENTATION
+#include "tools/stb_image.h"
+#include "glbasimac/glbi_texture.hpp"
 
 /// Camera parameters
 float angle_theta{45.0}; // Angle between x axis and viewpoint
 float angle_phy{30.0};   // Angle between z axis and viewpoint
 float dist_zoom{30.0};   // Distance between origin and viewpoint
-bool camPOV {false}; // define if cam is in POV mode
+bool camPOV{false};      // define if cam is in POV mode
 float anglePOV = 0;
-float xPOV {1.f}, yPOV {1.f};
-Vector3D view { Vector3D(xPOV,yPOV,5) };
+float xPOV{1.f}, yPOV{1.f};
+Vector3D view{Vector3D(xPOV, yPOV, 5)};
 
 GLBI_Engine myEngine;
+GLBI_Texture grassTexture;
 IndexedMesh *meshCube;
 IndexedMesh *meshCylinder;
 
@@ -19,8 +23,7 @@ GLBI_Set_Of_Points somePoints(3);
 GLBI_Set_Of_Points axisX(3);
 GLBI_Set_Of_Points axisY(3);
 GLBI_Set_Of_Points axisZ(3);
-
-GLBI_Convex_2D_Shape ground{3};
+StandardMesh *ground;
 
 void initScene()
 {
@@ -36,8 +39,8 @@ void initScene()
         50.0, 50.0, 0.0,
         -50.0, 50.0, 0.0};
 
-    ground.initShape(baseCarre);
-    ground.changeNature(GL_TRIANGLE_FAN);
+    ground = basicRect(100.0, 100.0);
+    ground->createVAO();
 
     std::vector<float> coord_axisX{
         0, 0, 0,
@@ -80,22 +83,55 @@ void initScene()
         rr);
 
     meshCylinder->createVAO();
+
+    int width, height, channels;
+
+    unsigned char *data =
+        stbi_load("../assets/textures/grass.jpg", &width, &height, &channels, 0);
+
+    if (data == nullptr)
+    {
+        std::cerr << "Failed to load texture" << std::endl;
+        return;
+    }
+
+    grassTexture.createTexture();
+
+    grassTexture.attachTexture();
+
+    grassTexture.setParameters(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    grassTexture.loadImage(width, height, channels, data);
+
+    grassTexture.detachTexture();
+
+    stbi_image_free(data);
+}
+
+void drawScenery()
+{
+    myEngine.mvMatrixStack.pushMatrix();
+    myEngine.updateMvMatrix();
+    // axisX.drawSet();
+    axisY.drawSet();
+    // axisZ.drawSet();
+
+    myEngine.activateTexturing(true);
+    grassTexture.attachTexture();
+    myEngine.mvMatrixStack.addRotation(M_PI_2, Vector3D(1, 0, 0));
+    myEngine.mvMatrixStack.addTranslation(Vector3D(-50, 0, -50));
+    myEngine.updateMvMatrix();
+    myEngine.setFlatColor(1.0f, 1.f, 1.f);
+    ground->draw();
+    myEngine.mvMatrixStack.popMatrix();
+    grassTexture.detachTexture();
+    myEngine.activateTexturing(false);
 }
 
 void drawScene(std::vector<Rail> rail_path)
 {
-    {
-        myEngine.mvMatrixStack.pushMatrix();
-        myEngine.updateMvMatrix();
-        // axisX.drawSet();
-        axisY.drawSet();
-        // axisZ.drawSet();
 
-        myEngine.updateMvMatrix();
-        myEngine.setFlatColor(0.0f, 0.5f, 0.0f);
-        ground.drawShape();
-        myEngine.mvMatrixStack.popMatrix();
-    }
+    drawScenery();
 
     for (auto rail : rail_path)
     {

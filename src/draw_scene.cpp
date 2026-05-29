@@ -6,6 +6,10 @@
 float angle_theta{45.0}; // Angle between x axis and viewpoint
 float angle_phy{30.0};   // Angle between z axis and viewpoint
 float dist_zoom{30.0};   // Distance between origin and viewpoint
+bool camPOV {false}; // define if cam is in POV mode
+float anglePOV = 0;
+float xPOV {1.f}, yPOV {1.f};
+Vector3D view { Vector3D(xPOV,yPOV,5) };
 
 GLBI_Engine myEngine;
 IndexedMesh *meshCube;
@@ -78,7 +82,7 @@ void initScene()
     meshCylinder->createVAO();
 }
 
-void drawScene()
+void drawScene(std::vector<Rail> rail_path)
 {
     {
         myEngine.mvMatrixStack.pushMatrix();
@@ -93,8 +97,6 @@ void drawScene()
         myEngine.mvMatrixStack.popMatrix();
     }
 
-    GridParam pars = readJson("../src/config.json");
-    std::vector<Rail> rail_path = CreateRailPath(pars);
     for (auto rail : rail_path)
     {
         drawRail(rail, myEngine);

@@ -5,6 +5,7 @@
 #include "tools/shaders.hpp"
 #include <iostream>
 
+
 using namespace glbasimac;
 using namespace STP3D;
 
@@ -174,6 +175,8 @@ int main(int /*argc*/, char ** /*argv*/)
 		myEngine.updateMvMatrix();
 
 		drawScene();
+	
+		
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

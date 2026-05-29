@@ -1,5 +1,6 @@
 #include "draw_scene.hpp"
 #include "rails.hpp"
+#include "train.hpp"
 
 /// Camera parameters
 float angle_theta{45.0}; // Angle between x axis and viewpoint
@@ -194,6 +195,7 @@ void initScene()
     meshCylinder->createVAO();
 }
 
+
 void drawScene()
 {
     {
@@ -213,6 +215,7 @@ void drawScene()
     std::vector<Rail> rail_path = CreateRailPath(pars);
     for (auto rail : rail_path){
         drawRail(rail);
+        drawTrain();
     }
 
 

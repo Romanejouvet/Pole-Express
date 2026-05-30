@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 	double elapsedTime{0.0};
 
 	std::string pars_path;
-	if (argc > 0)
+	if (argc > 1)
 	{
 		pars_path = argv[1];
 	}

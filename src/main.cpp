@@ -131,6 +131,13 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 		}
 		break;
 
+	case GLFW_KEY_E :		
+	if (is_pressed)
+		{
+			animLight = !animLight;
+		}
+		break;
+
 	default:
 		std::cerr << "Touche non gérée " << key << std::endl;
 	}

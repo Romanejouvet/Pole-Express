@@ -25,6 +25,7 @@ extern float xPOV, yPOV;
 extern Vector3D viewPOV;
 /* OpenGL Engine */
 extern GLBI_Engine myEngine;
+extern bool animLight;
 
 void initScene();
 

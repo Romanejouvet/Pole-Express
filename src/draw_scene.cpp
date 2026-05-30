@@ -10,14 +10,17 @@ float angle_theta{45.0}; // Angle between x axis and viewpoint
 float angle_phy{30.0};   // Angle between z axis and viewpoint
 float dist_zoom{30.0};   // Distance between origin and viewpoint
 bool camPOV{false};      // define if cam is in POV mode
-float anglePOV = 0;
+float anglePOV{0};
 float xPOV{1.f}, yPOV{1.f};
 Vector3D view{Vector3D(xPOV, yPOV, 5)};
+float lightAngle{0.f};
+bool animLight{false}; // definit si on fait bouger la boule ou pas
 
 GLBI_Engine myEngine;
-GLBI_Texture grassTexture;
+GLBI_Texture grassTexture; // bon la c'est de la neige mais ca pourrait être n'importe quoi
 IndexedMesh *meshCube;
 IndexedMesh *meshCylinder;
+IndexedMesh *meshSphere;
 
 GLBI_Set_Of_Points somePoints(3);
 GLBI_Set_Of_Points axisX(3);
@@ -106,6 +109,15 @@ void initScene()
     grassTexture.detachTexture();
 
     stbi_image_free(data);
+
+    meshSphere = basicSphere(0.5);
+    meshSphere->createVAO();
+
+    myEngine.switchToPhongShading();
+
+    myEngine.setLightIntensity(Vector3D(500, 500, 500));
+
+    myEngine.switchToFlatShading();
 }
 
 void drawScenery()
@@ -128,16 +140,32 @@ void drawScenery()
     myEngine.activateTexturing(false);
 }
 
+void drawLight()
+{
+
+    if (animLight)
+        lightAngle += 0.05f;
+
+    float x = 15.0f * cos(lightAngle);
+    float y = 15.0f * sin(lightAngle);
+    float z = 25.0f;
+
+    myEngine.setLightPosition(Vector4D(x, y, z, 1.0f));
+
+}
+
 void drawScene(std::vector<Rail> rail_path)
 {
+    myEngine.switchToPhongShading();
+
+    drawLight();
 
     drawScenery();
 
     for (auto rail : rail_path)
-    {
         drawRail(rail, myEngine);
-    }
+
     drawTrain();
 
-    return;
+    myEngine.switchToFlatShading();
 }

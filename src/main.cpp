@@ -131,6 +131,13 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 		}
 		break;
 
+	case GLFW_KEY_E :		
+	if (is_pressed)
+		{
+			animLight = !animLight;
+		}
+		break;
+
 	default:
 		std::cerr << "Touche non gérée " << key << std::endl;
 	}
@@ -198,11 +205,11 @@ int main(int argc, char **argv)
 	double elapsedTime{0.0};
 
 	std::string pars_path;
-	if (argc > 0)
+	if (argc > 1)
 	{
 		pars_path = argv[1];
-		std::cout << pars_path << std::endl;
 	}
+	else pars_path = "config.json"; // pour faciliter le debug
 
 	std::vector<Rail> path;
 

@@ -8,6 +8,8 @@
 #include "rails.hpp"
 #include "json_handler.hpp"
 #include <vector>
+#include "tools/stb_image.h"
+#include "glbasimac/glbi_texture.hpp"
 
 using namespace glbasimac;
 
@@ -26,6 +28,9 @@ extern Vector3D viewPOV;
 /* OpenGL Engine */
 extern GLBI_Engine myEngine;
 extern bool animLight;
+extern GLBI_Texture signTexture;
+extern GLBI_Texture brickTexture;
+extern GLBI_Texture smallBrickTexture;
 
 void initScene();
 

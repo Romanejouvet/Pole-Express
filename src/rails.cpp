@@ -95,7 +95,7 @@ void drawStraightRail(GLBI_Engine myEngine)
 void drawCurvedRail(GLBI_Engine myEngine)
 {
 
-    int nb_segments = 15;
+    int nb_segments = 75;
     float rayon_rail1 = 10.0f - posx_rail1;
     float rayon_rail2 = 10.0f - posx_rail2;
 
@@ -157,9 +157,10 @@ void drawRail(Rail r, GLBI_Engine myEngine)
 
     myEngine.mvMatrixStack.pushMatrix();
 
-    Vector3D pos = Vector3D(r.pos.x*10, r.pos.y*10, 0);
-    myEngine.mvMatrixStack.addTranslation(pos); // pour le placer sur la grille
+    Vector3D posRail = Vector3D(r.pos.x*10, r.pos.y*10, 0);
+    myEngine.mvMatrixStack.addTranslation(posRail); // pour le placer sur la grille
     myEngine.mvMatrixStack.addRotation(r.angle, Vector3D(0, 0, 1));
+    myEngine.setLightPosition(Vector4D(posRail.x,posRail.y,10.f,1.f)); // rajouter des lumieres au dessus des rails
 
     if (r.type == DROIT)
         drawStraightRail(myEngine);

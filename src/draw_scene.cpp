@@ -17,11 +17,15 @@ Vector3D view{Vector3D(xPOV, yPOV, 5)};
 float lightAngle{0.f};
 bool animLight{false}; // definit si on fait bouger la boule ou pas
 
+bool flatLighting = false;
+
 // meshes
 GLBI_Engine myEngine;
 IndexedMesh *meshCube;
-IndexedMesh *meshCylinder;
+IndexedMesh *meshCylinder;      // FLAG : initialisé a la longueur d'une balaste, fadra changer ca krkrkrk
+IndexedMesh *basicMeshCylinder; // en attendant pour le reste parce que je suis un singe
 IndexedMesh *meshSphere;
+StandardMesh *meshCone;
 
 // textures
 GLBI_Texture grassTexture; // bon la c'est de la neige mais ca pourrait être n'importe quoi
@@ -86,9 +90,9 @@ void loadTextures()
 
     stbi_image_free(signData);
 
-    // brick texture 
+    // brick texture
     unsigned char *brickData =
-    stbi_load("../assets/textures/briques_horizontal.png", &width, &height, &channels, 0);
+        stbi_load("../assets/textures/briques_horizontal.png", &width, &height, &channels, 0);
 
     if (brickData == nullptr)
     {
@@ -108,9 +112,9 @@ void loadTextures()
 
     stbi_image_free(brickData);
 
-        // small side wall brick texture 
+    // small side wall brick texture
     unsigned char *smallBrickData =
-    stbi_load("../assets/textures/briques_vertical.png", &width, &height, &channels, 0);
+        stbi_load("../assets/textures/briques_vertical.png", &width, &height, &channels, 0);
 
     if (smallBrickData == nullptr)
     {
@@ -130,7 +134,6 @@ void loadTextures()
 
     stbi_image_free(smallBrickData);
 }
-
 
 void initScene()
 {
@@ -191,6 +194,9 @@ void initScene()
 
     meshCylinder->createVAO();
 
+    meshCone = basicCone(1.f, 1.f);
+    meshCone->createVAO();
+
     loadTextures();
 
     meshSphere = basicSphere(0.5);
@@ -236,11 +242,17 @@ void drawPointLight(Vector3D vec)
 
 void drawScene(std::vector<Rail> rail_path)
 {
-    myEngine.switchToPhongShading();
+    if (flatLighting)
+    {
+        myEngine.switchToFlatShading();
+    }
+    else
+    {
+        myEngine.switchToPhongShading();
+        drawPointLight(Vector3D(10, 0, 25));
+    }
 
-    drawDirectionnalLight();
-
-    drawPointLight(Vector3D(10, 0, 25));
+    
 
     drawScenery();
 

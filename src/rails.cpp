@@ -1,6 +1,6 @@
 #include "rails.hpp"
 
-extern IndexedMesh* meshCube;
+extern IndexedMesh *meshCube;
 extern IndexedMesh *meshCylinder;
 
 std::vector<Rail> CreateRailPath(GridParam par)
@@ -33,18 +33,23 @@ std::vector<Rail> CreateRailPath(GridParam par)
         int dy2 = next.y - cur.y;
         // pour rendre la suite plus propre
 
-        if (dy1 == 0 && dy2 == 0) r.angle = M_PI_2;
+        if (dy1 == 0 && dy2 == 0)
+            r.angle = M_PI_2;
 
-        else if (dx1 == 0 && dx2 == 0) r.angle = 0; // utile pour pas avoir des rails courbes de partout
+        else if (dx1 == 0 && dx2 == 0)
+            r.angle = 0; // utile pour pas avoir des rails courbes de partout
 
         else
         {
             r.type = COURBE;
 
-            if ((dx1 == 1 && dy2 == -1) || (dy1 == 1 && dx2 == -1)) r.angle = M_PI_2;
-            else if ((dy1 == -1 && dx2 == 1) || (dx1 == -1 && dy2 == 1)) r.angle = -M_PI_2; 
-            else if ((dx1 == -1 && dy2 == -1) || (dy1 == 1 && dx2 == 1)) r.angle = M_PI;
-            // sinon angle a 0 
+            if ((dx1 == 1 && dy2 == -1) || (dy1 == 1 && dx2 == -1))
+                r.angle = M_PI_2;
+            else if ((dy1 == -1 && dx2 == 1) || (dx1 == -1 && dy2 == 1))
+                r.angle = -M_PI_2;
+            else if ((dx1 == -1 && dy2 == -1) || (dy1 == 1 && dx2 == 1))
+                r.angle = M_PI;
+            // sinon angle a 0
         }
 
         rail_path.push_back(r);
@@ -157,10 +162,11 @@ void drawRail(Rail r, GLBI_Engine myEngine)
 
     myEngine.mvMatrixStack.pushMatrix();
 
-    Vector3D posRail = Vector3D(r.pos.x*10, r.pos.y*10, 0);
+    Vector3D posRail = Vector3D(r.pos.x * 10, r.pos.y * 10, 0);
     myEngine.mvMatrixStack.addTranslation(posRail); // pour le placer sur la grille
     myEngine.mvMatrixStack.addRotation(r.angle, Vector3D(0, 0, 1));
-    myEngine.setLightPosition(Vector4D(posRail.x,posRail.y,10.f,1.f)); // rajouter des lumieres au dessus des rails
+    if (!flatLighting)
+        myEngine.setLightPosition(Vector4D(posRail.x, posRail.y, 10.f, 1.f)); // rajouter des lumieres au dessus des rails
 
     if (r.type == DROIT)
         drawStraightRail(myEngine);

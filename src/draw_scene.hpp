@@ -15,6 +15,8 @@ using namespace glbasimac;
 
 struct Rail;
 
+extern bool flatLighting;
+
 /* Camera parameters and functions */
 static const float Z_NEAR {0.1f};
 static const float Z_FAR {500.f};

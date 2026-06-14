@@ -65,7 +65,7 @@ void drawSiege()
 
 void drawPoubelle(Vector3D pos)
 {
-    // CORPS
+    // corps
     drawCylinder(
         pos,
         Vector3D(5.f, 5.f, 0.3f),
@@ -74,7 +74,7 @@ void drawPoubelle(Vector3D pos)
 
     );
 
-    // REBORD (cône inversé)
+    // rebord
     drawCone(
         pos + Vector3D(0.f, 0.f, 1.8f),
         Vector3D(1.0f, 1.f, .6f),
@@ -84,10 +84,11 @@ void drawPoubelle(Vector3D pos)
     );
 }
 
-void drawGare()
+void drawGare(Position origin)
 {
+    float ox=origin.x*10,oy=origin.y*10,oz=0.f;
     myEngine.mvMatrixStack.pushMatrix();
-    myEngine.mvMatrixStack.addTranslation(Vector3D(0, 10, 0.f));
+    myEngine.mvMatrixStack.addTranslation(Vector3D(ox,oy,oz));
 
     // sol gris
     drawBox(Vector3D(0.f, 1.f, 1.25f),
@@ -201,7 +202,7 @@ void drawGare()
             Vector3D(1.f, 0.2f, 0.5f),
             0.5f, 0.9f, 0.5f);
 
-    // ---------------- POUBELLE ----------------
+    // poubelle
 
     drawPoubelle(Vector3D(-3.5f, -0.5f, 2.f));
 

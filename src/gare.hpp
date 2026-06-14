@@ -4,6 +4,7 @@
 #include "tools/stb_image.h"
 #include "glbasimac/glbi_texture.hpp"
 
+
 extern glbasimac::GLBI_Engine myEngine;
 
-void drawGare();
+void drawGare(Position origin);

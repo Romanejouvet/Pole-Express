@@ -64,22 +64,22 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 		break;
 
 	case GLFW_KEY_K:
-    if (is_pressed)
-    {
-        if (flatLighting)
-        {
-            std::cout << "Flat lighting mode\n";
-            myEngine.switchToFlatShading();
-			flatLighting = false;
-        }
-        else
-        {
-            std::cout << "Phong lighting mode\n";
-            myEngine.switchToPhongShading();
-			flatLighting = true;
-        }
-    }
-    break;
+		if (is_pressed)
+		{
+			if (flatLighting)
+			{
+				std::cout << "Flat lighting mode\n";
+				myEngine.switchToFlatShading();
+				flatLighting = false;
+			}
+			else
+			{
+				std::cout << "Phong lighting mode\n";
+				myEngine.switchToPhongShading();
+				flatLighting = true;
+			}
+		}
+		break;
 
 	case GLFW_KEY_T:
 		//> EXO 3
@@ -150,8 +150,8 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 		}
 		break;
 
-	case GLFW_KEY_E :		
-	if (is_pressed)
+	case GLFW_KEY_E:
+		if (is_pressed)
 		{
 			animLight = !animLight;
 		}
@@ -228,15 +228,17 @@ int main(int argc, char **argv)
 	{
 		pars_path = argv[1];
 	}
-	else pars_path = "config.json"; // pour faciliter le debug
+	else
+		pars_path = "config.json"; // pour faciliter le debug
 
 	std::vector<Rail> path;
 
-	GridParam parameters = readJson("../src/"+pars_path);
-    path = CreateRailPath(parameters);
+	GridParam parameters = readJson("../src/" + pars_path);
+	path = CreateRailPath(parameters);
+	Position origin = parameters.origin;
 
-		/* Loop until the user closes the window */
-		while (!glfwWindowShouldClose(window))
+	/* Loop until the user closes the window */
+	while (!glfwWindowShouldClose(window))
 	{
 		/* Get time (in second) at loop beginning */
 		double startTime = glfwGetTime();
@@ -280,7 +282,7 @@ int main(int argc, char **argv)
 
 		myEngine.updateMvMatrix();
 
-		drawScene(path);
+		drawScene(path,origin);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

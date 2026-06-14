@@ -105,12 +105,6 @@ void drawGare(Position origin)
             Vector3D(5.f, 2.f, 0.2f),
             0.8f, 0.8f, 0.3f);
 
-    if (!flatLighting)
-    {
-        myEngine.setLightPosition(Vector4D(0.f, 1.f, 5.f, 1.f));
-        myEngine.setLightIntensity(Vector3D(100.f, 100.f, 100.f));
-    }
-
     // petit rebord blanc
     drawBox(Vector3D(0.f, -4.f, 2.f),
             Vector3D(10.f, 2.f, 1.f),

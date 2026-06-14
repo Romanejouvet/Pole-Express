@@ -260,6 +260,8 @@ void drawScene(std::vector<Rail> rail_path, Position origin)
     for (auto rail : rail_path)
         drawRail(rail, myEngine);
 
+    myEngine.setLightPosition(Vector4D(4.5f, 0.0f, 1.6f, 1.0f), 0);
+    myEngine.setLightIntensity(Vector3D(1.0f, 1.0f, 0.8f), 0);
     drawTrain();
 
     drawElement();

@@ -36,4 +36,4 @@ extern GLBI_Texture smallBrickTexture;
 
 void initScene();
 
-void drawScene(std::vector<Rail> rail_path);
+void drawScene(std::vector<Rail> rail_path, Position origin);

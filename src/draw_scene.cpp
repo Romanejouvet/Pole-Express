@@ -241,7 +241,7 @@ void drawPointLight(Vector3D vec)
     myEngine.setLightPosition(Vector4D(vec.x, vec.y, vec.z, 1.f));
 }
 
-void drawScene(std::vector<Rail> rail_path)
+void drawScene(std::vector<Rail> rail_path, Position origin)
 {
     if (flatLighting)
     {
@@ -265,7 +265,7 @@ void drawScene(std::vector<Rail> rail_path)
     drawElement();
 
     
-    drawGare();
+    drawGare(origin);
 
     myEngine.switchToFlatShading();
 }

@@ -14,6 +14,8 @@ static const unsigned int WINDOW_HEIGHT = 800;
 static const char WINDOW_TITLE[] = "Pole express";
 static float aspectRatio = 1.0f;
 
+extern bool flatLighting;
+
 /* Minimal time wanted between two images */
 static const double FRAMERATE_IN_SECONDS = 1. / 30.;
 
@@ -49,7 +51,6 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 	case GLFW_KEY_P:
 		if (is_pressed)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		// TO DO EX01 part 3
 
 	case GLFW_KEY_R:
 		//> EXO 3
@@ -61,6 +62,24 @@ void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int /*mods
 		}
 		//< FIN EXO 3
 		break;
+
+	case GLFW_KEY_K:
+    if (is_pressed)
+    {
+        if (flatLighting)
+        {
+            std::cout << "Flat lighting mode\n";
+            myEngine.switchToFlatShading();
+			flatLighting = false;
+        }
+        else
+        {
+            std::cout << "Phong lighting mode\n";
+            myEngine.switchToPhongShading();
+			flatLighting = true;
+        }
+    }
+    break;
 
 	case GLFW_KEY_T:
 		//> EXO 3
@@ -228,7 +247,6 @@ int main(int argc, char **argv)
 		// TO DO EX01 part 2
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
-		drawScene(path);
 
 		// TO DO EX01 part 3
 		/* Fix camera position */

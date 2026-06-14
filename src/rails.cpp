@@ -165,8 +165,7 @@ void drawRail(Rail r, GLBI_Engine myEngine)
     Vector3D posRail = Vector3D(r.pos.x * 10, r.pos.y * 10, 0);
     myEngine.mvMatrixStack.addTranslation(posRail); // pour le placer sur la grille
     myEngine.mvMatrixStack.addRotation(r.angle, Vector3D(0, 0, 1));
-    if (!flatLighting)
-        myEngine.setLightPosition(Vector4D(posRail.x, posRail.y, 10.f, 1.f)); // rajouter des lumieres au dessus des rails
+
 
     if (r.type == DROIT)
         drawStraightRail(myEngine);

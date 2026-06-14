@@ -48,7 +48,7 @@ void loadTextures()
     // ground textures
 
     unsigned char *data =
-        stbi_load("../assets/textures/grass.jpg", &width, &height, &channels, 0);
+        stbi_load("../assets/textures/iceee.jpg", &width, &height, &channels, 0);
 
     if (data == nullptr)
     {
@@ -230,42 +230,61 @@ void drawScenery()
     myEngine.activateTexturing(false);
 }
 
-void drawDirectionnalLight()
+void drawSun()
 {
-    myEngine.setLightPosition(Vector4D(0, 0, 50, 0.0f));
+
+
+    if (animLight)
+        lightAngle += .1f;
+
+    float radius = 20.f;
+
+    Vector3D sunPos(
+        radius * cos(lightAngle),
+        radius * sin(lightAngle),
+        50.f
+    );
+
+
+
+    myEngine.setLightPosition(Vector4D(
+        sunPos.x,
+        sunPos.y,
+        sunPos.z,
+        1.0f
+    ));
+
+    myEngine.setLightIntensity(Vector3D(5000.f, 5000.f, 5000.f)); 
+
 }
 
-void drawPointLight(Vector3D vec)
+void drawDirectionalLight()
 {
-
-    myEngine.setLightPosition(Vector4D(vec.x, vec.y, vec.z, 1.f));
+    myEngine.setLightPosition(Vector4D(0.f, 20.f, 50.f, 0.0f), 0);
+    myEngine.setLightIntensity(Vector3D(0.3f, 0.3f, 0.3f), 0);
 }
 
 void drawScene(std::vector<Rail> rail_path, Position origin)
 {
     if (flatLighting)
-    {
         myEngine.switchToFlatShading();
-    }
     else
-    {
         myEngine.switchToPhongShading();
-        drawPointLight(Vector3D(10, 0, 25));
-    }
 
-    
+    if (!flatLighting)
+    {
+        drawDirectionalLight();
+        drawSun();
+    }
 
     drawScenery();
 
     for (auto rail : rail_path)
         drawRail(rail, myEngine);
 
-    drawTrain();
-
-    drawElement();
-
-    
     drawGare(origin);
+    drawTrain();
+    drawElement();
 
     myEngine.switchToFlatShading();
 }

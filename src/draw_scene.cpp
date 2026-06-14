@@ -203,11 +203,6 @@ void initScene()
     meshSphere = basicSphere(0.5);
     meshSphere->createVAO();
 
-    myEngine.switchToPhongShading();
-
-    myEngine.setLightIntensity(Vector3D(500.f, 500.f, 500.f));
-
-    myEngine.switchToFlatShading();
 }
 
 void drawScenery()
@@ -230,9 +225,15 @@ void drawScenery()
     myEngine.activateTexturing(false);
 }
 
+
+void drawDirectionalLight()
+{
+    myEngine.setLightPosition(Vector4D(0.f, 20.f, 50.f, 0.0f), 0);
+    myEngine.setLightIntensity(Vector3D(0.3f, 0.3f, 0.3f), 0);
+}
+
 void drawSun()
 {
-
 
     if (animLight)
         lightAngle += .1f;
@@ -242,26 +243,29 @@ void drawSun()
     Vector3D sunPos(
         radius * cos(lightAngle),
         radius * sin(lightAngle),
-        50.f
-    );
-
-
+        50.f);
 
     myEngine.setLightPosition(Vector4D(
         sunPos.x,
         sunPos.y,
         sunPos.z,
-        1.0f
-    ));
+        1.0f));
 
-    myEngine.setLightIntensity(Vector3D(5000.f, 5000.f, 5000.f)); 
-
+    myEngine.setLightIntensity(Vector3D(2500.f, 2500.f, 2500.f));
 }
 
-void drawDirectionalLight()
+
+
+void drawTrainLight(Vector3D trainFrontPos)
 {
-    myEngine.setLightPosition(Vector4D(0.f, 20.f, 50.f, 0.0f), 0);
-    myEngine.setLightIntensity(Vector3D(0.3f, 0.3f, 0.3f), 0);
+    myEngine.setLightPosition(
+        Vector4D(trainFrontPos.x, trainFrontPos.y, trainFrontPos.z, 1.0f),
+        2
+    );
+
+    myEngine.setLightIntensity(
+        Vector3D(8.0f, 8.0f, 6.0f) , 2
+    );
 }
 
 void drawScene(std::vector<Rail> rail_path, Position origin)
@@ -275,6 +279,7 @@ void drawScene(std::vector<Rail> rail_path, Position origin)
     {
         drawDirectionalLight();
         drawSun();
+        //drawTrainLight(Vector3D(4.5f, 0.0f, 1.6f));
     }
 
     drawScenery();
@@ -283,8 +288,6 @@ void drawScene(std::vector<Rail> rail_path, Position origin)
         drawRail(rail, myEngine);
 
     drawGare(origin);
-    myEngine.setLightPosition(Vector4D(4.5f, 0.0f, 1.6f, 1.0f), 0);
-    myEngine.setLightIntensity(Vector3D(1.0f, 1.0f, 0.8f), 0);
     drawTrain();
     drawElement();
 

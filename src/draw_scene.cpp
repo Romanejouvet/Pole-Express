@@ -1,6 +1,7 @@
 #include "draw_scene.hpp"
 #include "rails.hpp"
 #include "train.hpp"
+#include "element.hpp"
 #include "gare.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "tools/stb_image.h"
@@ -261,6 +262,9 @@ void drawScene(std::vector<Rail> rail_path)
 
     drawTrain();
 
+    drawElement();
+
+    
     drawGare();
 
     myEngine.switchToFlatShading();

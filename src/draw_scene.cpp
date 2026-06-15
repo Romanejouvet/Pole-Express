@@ -203,6 +203,8 @@ void initScene()
     meshSphere = basicSphere(0.5);
     meshSphere->createVAO();
 
+    myEngine.addALight(Vector4D(20.f * cos(lightAngle),20.f * sin(lightAngle),50.f,1.f),Vector3D(2500,2500,2500)); // lumiere du soleil
+    myEngine.addALight(Vector4D(4.5f, 0.0f, 1.6f,1.0f),Vector3D(8.0f, 8.0f, 6.0f)); // lumiere du train
 }
 
 void drawScenery()
@@ -234,38 +236,16 @@ void drawDirectionalLight()
 
 void drawSun()
 {
-
     if (animLight)
         lightAngle += .1f;
 
     float radius = 20.f;
 
-    Vector3D sunPos(
+    myEngine.setLightPosition(Vector4D(
         radius * cos(lightAngle),
         radius * sin(lightAngle),
-        50.f);
-
-    myEngine.setLightPosition(Vector4D(
-        sunPos.x,
-        sunPos.y,
-        sunPos.z,
-        1.0f));
-
-    myEngine.setLightIntensity(Vector3D(2500.f, 2500.f, 2500.f));
-}
-
-
-
-void drawTrainLight(Vector3D trainFrontPos)
-{
-    myEngine.setLightPosition(
-        Vector4D(trainFrontPos.x, trainFrontPos.y, trainFrontPos.z, 1.0f),
-        2
-    );
-
-    myEngine.setLightIntensity(
-        Vector3D(8.0f, 8.0f, 6.0f) , 2
-    );
+        50.f,
+        1.0f), 1);
 }
 
 void drawScene(std::vector<Rail> rail_path, Position origin)
@@ -279,7 +259,6 @@ void drawScene(std::vector<Rail> rail_path, Position origin)
     {
         drawDirectionalLight();
         drawSun();
-        //drawTrainLight(Vector3D(4.5f, 0.0f, 1.6f));
     }
 
     drawScenery();

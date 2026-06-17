@@ -8,9 +8,7 @@ extern GLBI_Texture signTexture;
 extern GLBI_Texture brickTexture;
 extern GLBI_Texture smallBrickTexture;
 
-// -----------------------------------------------------
-// UTILITAIRE PROPRE
-// -----------------------------------------------------
+
 static void drawBox(Vector3D pos, Vector3D size, float r, float g, float b)
 {
     myEngine.setFlatColor(r, g, b);

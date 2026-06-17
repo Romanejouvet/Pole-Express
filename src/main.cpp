@@ -181,6 +181,8 @@ int main(int argc, char **argv)
 	if (!glfwInit())
 		return -1;
 
+
+	// FLAG : les enlever pour linux
 	/* Try to uncomment this for MAC OS if it did not work */
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
